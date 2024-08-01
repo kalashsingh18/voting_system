@@ -45,11 +45,11 @@ def checktoken(request):
     print(auth_header)
     print(auth_header.startswith('Bearer '))
     if auth_header :
-      print(auth_header)
-      token = auth_header.split(' ')[1].strip()
-      token=token[0:-1]
+        print(auth_header)
+        token = auth_header.split(' ')[1].strip()
+        token=token[0:-1]
         
-      try:
+     
         access_token = AccessToken(token)
         
 
@@ -62,8 +62,6 @@ def checktoken(request):
             return Response(serializer.data)
         else:
             return Response(12345)
-      except:
-          pass
 
     else:
         return Response({'error': 'Token not provided'}, status=400)
