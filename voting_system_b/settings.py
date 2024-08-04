@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "login_apis",
     "rest_framework",
+    "manage_election_creation",
 ]
 
 MIDDLEWARE = [
