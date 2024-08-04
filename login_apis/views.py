@@ -20,7 +20,7 @@ def register_user(request):
         data=users.objects.values()
 
         for user in data:
-            print(request.data["username"])
+            
             if user["username"]==request.data["username"]:
                 return Response("user already exist")
         serializer = Userserializer(data=request.data)
