@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from login_apis import urls
+from manage_election_creation import urls as ur
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include(urls),name="login_urls"),
+    path("manage_election",include(ur),name="manage_election"),
 ]
