@@ -4,5 +4,6 @@ from login_apis import urls
 from.import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",views.create_candidates.as_view(),name="create_candidates"),
+    path("",views.create_unique_id,name="create_candidates"),
+    path("/do_votes",views.do_vote,name="do_votes"),
 ]
