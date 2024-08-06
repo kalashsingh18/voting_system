@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .serializer import Candidatesserializer,Create_elections_serializer
-import hashlib
+import base64
 from rest_framework.response import Response
 from .models import candiates
 from rest_framework.decorators import api_view
@@ -28,19 +28,29 @@ def create_unique_id(request):
         number_of_candidates=request.data.get("number_of_candidates")
         unique_id=generate_unique_id(name,number_of_candidates)
         return Response(unique_id)
+@api_view(["POST"])
+def select_election(request):
+    # Extract the unique_id from the request data
+    pass
 
 def generate_unique_id(name: str, number: int) -> str:
-    # Concatenate the name and number into a single string
-    combined = f"{name}{number}"
+    combined = f"{name}:{number}"
     
-    # Generate a SHA-256 hash of the combined string
-    unique_id = hashlib.sha256(combined.encode()).hexdigest()
+    # Encode the combined string to Base64
+    encoded_bytes = base64.urlsafe_b64encode(combined.encode('utf-8'))
+    encoded_str = encoded_bytes.decode('utf-8')
     
-    # Optionally, truncate the hash to a desired length (e.g., first 10 characters)
-    unique_id = unique_id[:10]
-    
-    return unique_id
+    return encoded_str
 
+def decode_unique_id(encoded_str: str) :
+    # Decode the Base64 string back to the original combined string
+    decoded_bytes = base64.urlsafe_b64decode(encoded_str.encode('utf-8'))
+    decoded_str = decoded_bytes.decode('utf-8')
+    
+    # Split the combined string to retrieve name and number
+    name, number = decoded_str.split(':')
+    
+    return name, int(number)
 # Example usage
 
 
