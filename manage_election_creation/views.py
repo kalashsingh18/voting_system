@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from .serializer import Candidatesserializer,Create_elections_serializer
 import base64
+import json
 from rest_framework.response import Response
 from .models import candiates
 from rest_framework.decorators import api_view
 from .models import candiates,create_elections
 from rest_framework import generics
+# from .models import create_elections,candiates
+from .models import create_elections as ce
 class create_candidates(generics.ListCreateAPIView):
         queryset=candiates.objects.all()
         serializer_class=Candidatesserializer
@@ -16,7 +19,7 @@ class create_elections(generics.CreateAPIView):
 def do_vote(request):
                 print(request.data)
                 candidates=request.data["names"]
-                candidates=candiates.objects.filter(name=candidates).first()
+                candidates=candiates.object.filter(name=candidates).first()
                 candidates.number_of_votes=candidates.number_of_votes+1
                 
                 candidates.save()
@@ -25,14 +28,25 @@ def do_vote(request):
 @api_view(["POST"])
 def create_unique_id(request):
         name=request.data.get("name")
+        
         number_of_candidates=request.data.get("number_of_candidates")
         unique_id=generate_unique_id(name,number_of_candidates)
-        return Response(unique_id)
+        id=type(unique_id)
+        return Response(unique_id,status=200)
 @api_view(["POST"])
 def select_election(request):
     # Extract the unique_id from the request data
-    pass
-
+    unique_id=request.data.get("unique_id")
+    if unique_id:
+           unique_id=decode_unique_id(unique_id)
+           election=ce.objects.all().values()
+           return Response(election)
+    
+@api_view(["GET"])
+def details_of_election(request):
+       election_name=request.dta.get("election_name")
+       number_of_candidates=request.data.get("number_of_candidates")
+       
 def generate_unique_id(name: str, number: int) -> str:
     combined = f"{name}:{number}"
     

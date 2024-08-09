@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import users
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-class Userserializer(serializers.ModelSerializer):
+class Users_models_serializer(serializers.ModelSerializer):
     class Meta:
         model = users
         fields = "__all__"
